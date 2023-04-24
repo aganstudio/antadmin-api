@@ -12,6 +12,7 @@ Route::prefix('v2/' . $apiBackPrefix)->group(function () {
 Route::middleware('auth:sanctum')->prefix('v2/' . $apiBackPrefix)->group(function () {
     //登录用户
     Route::match(['post'], '/info', \App\ApiBackend\Admin\Info::class);
+    Route::match(['post'], '/menulist', \App\ApiBackend\Admin\MenuPermission::class);
     // 管理用户
     Route::match(['post'], '/admin/page', \App\ApiBackend\Admin\Query::class);
     Route::match(['post'], '/admin/add', \App\ApiBackend\Admin\AddUpdate::class);

@@ -51,18 +51,34 @@ class AddUpdate extends ApiBaseController
         $isUpdate = $deptId = request('id');
         //数据处理
         $insertData = [
+            "title" => request('title'),
             "name" => request('name'),
+            "path" => request('path'),
             "pid" => $parentId,
             "perms" => request('perms'),
             "type" => request('type'),
             "sort" => request('sort'),
             "status" => request('status'),
             "icon" => request('icon'),
-            "component" => request('component') ?? '',
-            "isShow" => request('isShow'),
+            "isHide" => request('isHide'),
             "isLink" => request('isLink') ?? 0,
         ];
+        $insertData['pids'] = $parentId;
+        $pids = DB::table('admin_menu')->where('id', $parentId)->value('pids');
+        if($pids)
+        {//上级目录
+            $insertData['pids'] = $pids.','.$parentId;
+        }
 
+        switch (request('type'))
+        {
+            case 0:
+                $insertData['component'] = "LAYOUT";
+                break;
+            case 1:
+                $insertData['component'] = request('component');
+                break;
+        }
         //更新数据
         try {
             if ($isUpdate) {//更新

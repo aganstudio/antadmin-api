@@ -29,13 +29,13 @@ class SelectList extends ApiBaseController
         $selectFields = [
             "id",
             "pid",
-            "name",
+            "title",
         ];
         $listData =  DB::table('admin_menu')
             ->select($selectFields)
             ->where('pid',0)
             ->where('type',"<",2)
-            ->orderBy("sort", "ASC")
+            ->orderBy("sort", "DESC")
             ->get();
         foreach ($listData as &$item)
         {
@@ -43,7 +43,7 @@ class SelectList extends ApiBaseController
                 ->select($selectFields)
                 ->where('pid',$item->id)
                 ->where('type',"<",2)
-                ->orderBy("sort", "ASC")
+                ->orderBy("sort", "DESC")
                 ->get();
             foreach ($item->children as &$childItem)
             {
@@ -51,7 +51,7 @@ class SelectList extends ApiBaseController
                     ->select($selectFields)
                     ->where('pid',$childItem->id)
                     ->where('type',"<",2)
-                    ->orderBy("sort", "ASC")
+                    ->orderBy("sort", "DESC")
                     ->get();
             }
         }

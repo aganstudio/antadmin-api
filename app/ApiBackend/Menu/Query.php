@@ -37,14 +37,16 @@ class Query extends ApiBaseController
         $selectFields = [
             "id",
             "pid",
+            "title",
             "name",
+            "path",
             "component",
             "perms",
             "type",
             "icon",
             "sort",
             "keepalive",
-            "isShow",
+            "isHide",
             "isLink",
             "status",
             "updateTime",
@@ -52,7 +54,7 @@ class Query extends ApiBaseController
         $listData =  DB::table('admin_menu')
             ->select($selectFields)
             ->where('pid',0)
-            ->orderBy("sort", "ASC")
+            ->orderBy("sort", "DESC")
             ->get();
         foreach ($listData as &$item)
         {
@@ -60,7 +62,7 @@ class Query extends ApiBaseController
             $item->children = DB::table('admin_menu')
                 ->select($selectFields)
                 ->where('pid',$item->id)
-                ->orderBy("sort", "ASC")
+                ->orderBy("sort", "DESC")
                 ->get();
             foreach ($item->children as &$childItem)
             {
@@ -68,7 +70,7 @@ class Query extends ApiBaseController
                 $childItem->children = DB::table('admin_menu')
                     ->select($selectFields)
                     ->where('pid',$childItem->id)
-                    ->orderBy("sort", "ASC")
+                    ->orderBy("sort", "DESC")
                     ->get();
 
                 foreach ($childItem->children as &$childOneItem)
@@ -77,7 +79,7 @@ class Query extends ApiBaseController
                     $childOneItem->children = DB::table('admin_menu')
                         ->select($selectFields)
                         ->where('pid',$childOneItem->id)
-                        ->orderBy("sort", "ASC")
+                        ->orderBy("sort", "DESC")
                         ->get();
                     foreach ($childOneItem->children as &$childTwoItem)
                     {

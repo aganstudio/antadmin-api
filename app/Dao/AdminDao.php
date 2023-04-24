@@ -21,7 +21,9 @@ class AdminDao
         $selectFields = [
             "su.username",
             "su.name",
-            "sd.deptName"
+            "su.roleId",
+            "su.isSuper",
+            "sd.deptName",
         ];
         return DB::table("admin as su")
             ->leftJoin("admin_department as sd", "su.deptId", "=", "sd.deptId")
