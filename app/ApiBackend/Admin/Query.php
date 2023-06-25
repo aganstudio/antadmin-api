@@ -57,7 +57,7 @@ class Query extends ApiBaseController
         //是否需要分页
         $isPage = strpos(request()->path(), "page") ? 1 : 0;
         if ($isPage) {// 分页查询
-            $totalQuery = $queryConstructor;
+            $total = $queryConstructor->count();
             $pageNumber = \request("pageNumber", 1);
             $pageSize = \request("pageSize", 20);
             $queryConstructor->offset(($pageNumber - 1) * $pageSize)->limit($pageSize);
@@ -68,8 +68,6 @@ class Query extends ApiBaseController
 
         //返回结果
         if ($isPage) {// 分页查询
-            $total = $totalQuery->count();
-
             $this->result["data"]["list"] = $listData;
             $this->result["data"]["total"] = $total;
         } else {

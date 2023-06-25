@@ -1,21 +1,19 @@
 <?php
 
-namespace App\ApiBackend\Role;
+namespace App\ApiBackend\Workbench;
 
 use App\Http\Controllers\ApiBaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 /**
- *  获取全部权限数据
+ *  获取全部用户信息
  */
-class Query extends ApiBaseController
+class Notice extends ApiBaseController
 {
     private array $searchMap = [
-        "roleName" => ["aa.roleName", "like"],
-        "status" => ["aa.status", "="],
     ];
-
 
     /**
      * 参数检查
@@ -30,18 +28,13 @@ class Query extends ApiBaseController
      */
     protected function service()
     {
-
         //基础查询构造器
         $selectFields = [
-            "aa.roleId",
-            "aa.roleName",
-            "aa.status",
-            "aa.remark",
-            "aa.updateTime",
+            "aa.*",
         ];
-        $queryConstructor = DB::table('admin_role as aa')
-            ->select($selectFields)
-            ->orderBy("aa.roleId", "ASC");
+        $queryConstructor = DB::table('sys_notice as su')
+            ->orderBy("su.id", "DESC");
+
         //搜索条件
         $this->querySearchConstructor($queryConstructor, $this->searchMap);
 
@@ -53,10 +46,8 @@ class Query extends ApiBaseController
             $pageSize = \request("pageSize", 20);
             $queryConstructor->offset(($pageNumber - 1) * $pageSize)->limit($pageSize);
         }
-
         $listData = $queryConstructor->get();
         empty($listData) && $listData = [];
-
         //返回结果
         if ($isPage) {// 分页查询
             $this->result["data"]["list"] = $listData;
@@ -65,5 +56,6 @@ class Query extends ApiBaseController
             $this->result["data"] = $listData;
         }
         return $this->result;
+
     }
 }

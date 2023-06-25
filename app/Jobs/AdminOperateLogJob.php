@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\SysAdmin;
+use App\Models\AdminModel;
 use App\Utils\FunctionUtil;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -17,7 +17,7 @@ class AdminOperateLogJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected array $requestArr;
-    protected SysAdmin $user;
+    protected AdminModel $user;
     protected array $responseArr;
     protected string $remark;
     /**
@@ -25,7 +25,7 @@ class AdminOperateLogJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(SysAdmin $user, $requestArr, $responseArr, $remark="")
+    public function __construct(AdminModel $user, $requestArr, $responseArr, $remark="")
     {
         $this->user = $user->withoutRelations();
         $this->requestArr = $requestArr;

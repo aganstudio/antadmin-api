@@ -40,7 +40,7 @@ abstract class ApiBaseController extends \Illuminate\Routing\Controller
         //主体逻辑
         $serviceData = $this->service();
         if (!empty($serviceData['data'])) {
-            $serviceData['data'] = $this->formateResult($serviceData['data']);
+            !is_string($serviceData['data']) &&  $serviceData['data']= $this->formateResult($serviceData['data']);
         }
         return $serviceData;
     }
@@ -53,7 +53,7 @@ abstract class ApiBaseController extends \Illuminate\Routing\Controller
     {
         foreach ($searchMap as $requestKey => $searchRule) {
             $requestKeyVal = \request($requestKey);
-            if ($requestKeyVal) {
+            if (isset($requestKeyVal)) {
                 switch ($searchRule[1]) {
                     case "=":
                         $queryContruct->where($searchRule[0], $requestKeyVal);

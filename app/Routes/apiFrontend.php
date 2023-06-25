@@ -1,5 +1,6 @@
 <?php
 
+use App\Cron\OrderFinishNoticeCron;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,5 +14,10 @@ Route::middleware('auth:sanctum')->prefix('v1/')->group(function () {
 
 //本地测试
 Route::get('/test', function (Request $request) {
+
+
+    $obj = new OrderFinishNoticeCron();
+    $obj();
+
     return $request->ip();
 });

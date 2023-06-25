@@ -1,8 +1,8 @@
 {
     "name": "Wms",
-    "title": "仓库管理系统",
+    "title": "Demo演示",
     "version": "1.0.0",
     "author": "sentang",
     "antadminVersion": ">=1.0.0",
-    "description": "仓库管理系统",
+    "description": "Demo演示",
 }

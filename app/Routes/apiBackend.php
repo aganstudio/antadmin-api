@@ -35,4 +35,13 @@ Route::middleware('auth:sanctum')->prefix('v2/' . $apiBackPrefix)->group(functio
     Route::match(['post'], '/role/simpleupdate', \App\ApiBackend\Role\SimpleUpdate::class);
     Route::match(['post'], '/role/add', \App\ApiBackend\Role\AddUpdate::class);
     Route::match(['post'], '/role/delete', \App\ApiBackend\Role\Delete::class);
+    //通用
+    //上传接口
+    Route::match(['post'], '/upload', \App\ApiBackend\Common\Upload::class);
+    //工作台
+    Route::match(['post'], '/workbench/statistic', \App\ApiBackend\Workbench\Statistic::class);
+    Route::match(['post'], '/workbench/project', \App\ApiBackend\Workbench\Project::class);
+    Route::match(['post'], '/workbench/notice', \App\ApiBackend\Workbench\Notice::class);
+
+
 });

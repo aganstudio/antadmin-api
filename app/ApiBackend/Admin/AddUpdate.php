@@ -38,7 +38,6 @@ class AddUpdate extends ApiBaseController
     protected function service()
     {
         $isUpdate = $adminId = request('id');
-
         //数据
         $insertData = [
             "username" => request('username'),
@@ -48,6 +47,11 @@ class AddUpdate extends ApiBaseController
             "remark" => request('remark', ""),
             "createTime" => date('Y-m-d H:i:s'),
         ];
+        //是否超级管理员
+        if (request('roleId') <=1 )
+        {
+            $insertData['isSuper'] = 1;
+        }
         //更新数据
         try {
             if ($isUpdate) {//更新

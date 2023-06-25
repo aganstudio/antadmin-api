@@ -34,18 +34,38 @@ class MenuPermission extends ApiBaseController
             return $this->result;
         }
         //菜单和权限
-        $whereArr = [
-            'status' => 1
-        ];
+
         if (!$adminInfo->isSuper) {
-            $whereArr['aa.roleId'] = $adminInfo->roleId;
-            $roleMenuList = DB::table("admin_role_menu as aa")
+            $whereArr = [
+                'am.status' => 1,
+                'aa.roleId' => $adminInfo->roleId,
+            ];
+            $roleMenu = DB::table("admin_role_menu as aa")
                 ->join("admin_menu as am", 'aa.menuId', '=', 'am.id')
+                ->select(['am.id','am.pids'])
                 ->where($whereArr)
                 ->get();
+            $menuIdArr = [];
+            foreach ($roleMenu as $item){
+                if($item->pids)
+                {
+                    $menuIdArr = array_merge($menuIdArr, explode(",",$item->pids));
+                }
+                $menuIdArr[] = $item->id;
+            }
+            $menuIdArr = array_unique($menuIdArr);
+            // dump($menuIdArr);
+            // 菜单
+            $roleMenuList = DB::table("admin_menu as aa")
+                ->where('status',1)
+                ->whereIn("id",$menuIdArr)
+                ->orderBy("type", 'ASC')
+                ->orderBy("sort", 'DESC')
+                ->get();
+
         } else {
             $roleMenuList = DB::table("admin_menu as aa")
-                ->where($whereArr)
+                ->where('status',1)
                 ->orderBy("type", 'ASC')
                 ->orderBy("sort", 'DESC')
                 ->get();
@@ -95,7 +115,8 @@ class MenuPermission extends ApiBaseController
                 $jjj = 0;
                 if (empty($menuTwo['children'])) {
                     empty($menuNewArr[$j]['redirect']) && $menuNewArr[$j]['redirect'] = $menuOne['path'] . '/' . $menuTwo["path"];
-                    count($menuOne['children']) <= 1 && $menuNewArr[$j]['meta']['hideChildrenInMenu'] = true;
+                    //count($menuOne['children']) <= 1 && $menuNewArr[$j]['meta']['hideChildrenInMenu'] = true;
+                    $jj++;
                     continue;
                 }
                 $menuNewArr[$j]['children'][$jj]['children'] = [];
@@ -109,7 +130,6 @@ class MenuPermission extends ApiBaseController
             }
             $j++;
         }
-
         // dump($menuNewArr);
         $this->result['data']['permissionList'] = $permissionArr;
         $this->result['data']['menuList'] = $menuNewArr;

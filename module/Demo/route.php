@@ -11,7 +11,7 @@ Route::middleware('auth:sanctum')->prefix("v1/" . $apiBackPrefix . '/demo')->gro
 });
 
 //前端路由
-Route::prefix('/v1/demo')->group(function () {
+Route::prefix('v1/demo')->group(function () {
     Route::get('/test', function () {
         return "demo apiFrontend test...";
     });

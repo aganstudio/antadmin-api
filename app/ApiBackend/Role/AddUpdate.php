@@ -19,7 +19,7 @@ class AddUpdate extends ApiBaseController
         try {
             request()->validate([
                 'roleName' => 'required',
-                'label' => 'required',
+                // 'label' => 'required',
                 'menu' => 'required|array',
             ]);
         } catch (\Exception $exception) {
@@ -39,7 +39,7 @@ class AddUpdate extends ApiBaseController
         //数据
         $insertData = [
             "roleName" => request('roleName'),
-            "label" => request('label'),
+            // "label" => request('label'),
             "status" => request('status'),
             "remark" => request('remark', ""),
         ];
